@@ -12,46 +12,55 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { signIn, SessionProvider } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
-export default function Home() {
+export function Buttons() {
+  const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const Action = (user: string) => {
     signIn("http-email", { email: `${user}@y4.gg` });
   };
-
-  return (
-        <Dialog>
-          <form>
-            <DialogTrigger asChild>
-              <Button>Sign In</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Sign In</DialogTitle>
-                <DialogDescription>
-                  Sign into the remote home teleportation tool.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="username-">Minecraft Username</Label>
-                  <Input
-                    type="username"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
+  if (!session) {
+    return (
+      <Dialog>
+        <form>
+          <DialogTrigger asChild>
+            <Button>Sign In</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Sign In</DialogTitle>
+              <DialogDescription>
+                Sign into the remote home teleportation tool.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div className="grid gap-3">
+                <Label htmlFor="username-">Minecraft Username</Label>
+                <Input
+                  type="username"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
-              <div className="flex flex-row gap-3">
-                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button onClick={() => Action(username)}>Sign In</Button>
-              </div>
-            </DialogContent>
-          </form>
-        </Dialog>
-  );
+            </div>
+            <div className="flex flex-row gap-3">
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button onClick={() => Action(username)}>Sign In</Button>
+            </div>
+          </DialogContent>
+        </form>
+      </Dialog>
+    );
+  } else {
+    return (
+      <>
+        <Button>Teleport to home</Button>
+        <Button variant={"outline"}>Set Home at current location</Button>
+      </>
+    );
+  }
 }
