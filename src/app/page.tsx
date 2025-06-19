@@ -11,19 +11,12 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import { sendCode } from "@/lib/verify";
 import { useState } from "react";
 
@@ -40,90 +33,32 @@ export default function Home() {
         <Dialog>
           <form>
             <DialogTrigger asChild>
-              <Button>Register</Button>
+              <Button>Sign In</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Register</DialogTitle>
+                <DialogTitle>Sign In</DialogTitle>
                 <DialogDescription>
-                  Sign up for the remote home teleportation tool.
+                  Sign into the remote home teleportation tool.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4">
                 <div className="grid gap-3">
-                  <Label htmlFor="username-">Username</Label>
-                  <div className="flex w-full max-w-sm items-center gap-2">
-                    <Input type="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
-                    <Button type="submit" variant="outline" onClick={() => sendCode(username)}>
-                      Send verification code
-                    </Button>
-                  </div>
+                  <Label htmlFor="username-">Minecraft Username</Label>
+                  <Input
+                    type="username"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
                 </div>
-                <InputOTP maxLength={6}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
               </div>
-              <DialogFooter>
+              <div className="flex flex-row gap-3">
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button type="submit">Register</Button>
-              </DialogFooter>
-            </DialogContent>
-          </form>
-        </Dialog>
-        <Dialog>
-          <form>
-            <DialogTrigger asChild>
-              <Button>Login</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Login</DialogTitle>
-                <DialogDescription>
-                  Login into your web home account.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="username">Username</Label>
-                  <div className="flex w-full max-w-sm items-center gap-2">
-                    <Input type="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
-                    <Button type="button" variant="outline" onClick={() => sendCode(username)}>
-                      Send verification code
-                    </Button>
-                  </div>
-                </div>
-                <InputOTP maxLength={6}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
+                <Button onClick={() => sendCode(username)}>Sign In</Button>
               </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Login</Button>
-              </DialogFooter>
             </DialogContent>
           </form>
         </Dialog>
@@ -131,7 +66,7 @@ export default function Home() {
       <Accordion
         type="single"
         className="w-80 mt-6"
-        defaultValue="item-1"
+        // defaultValue="item-1"
         collapsible
       >
         <AccordionItem value="item-1">
