@@ -17,11 +17,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { sendCode } from "@/lib/verify";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   const [username, setUsername] = useState("");
+  const Action = (user: string) => {
+    signIn("http-email", { email: `${user}@y4.gg` });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -57,7 +60,7 @@ export default function Home() {
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button onClick={() => sendCode(username)}>Sign In</Button>
+                <Button onClick={() => Action(username)}>Sign In</Button>
               </div>
             </DialogContent>
           </form>
