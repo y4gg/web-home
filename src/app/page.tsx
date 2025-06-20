@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold text-white">Web Home</h1>
-      <p className="text-lg text-gray-300 sm:max-w-80">
+      <p className="text-lg text-gray-300 max-w-80 md:max-w-none">
         Teleport back to your minecraft home over this website
       </p>
       <div className="flex flex-row gap-4 mt-6">

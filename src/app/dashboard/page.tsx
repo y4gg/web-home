@@ -24,10 +24,11 @@ export default async function Home() {
       orderBy: { createdAt: "desc" },
     });
     const [x, y, z] = [home?.location?.split(" ")[0], home?.location?.split(" ")[1], home?.location?.split(" ")[2]];
+    const dimesnsion = home?.dimension;
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-4xl font-bold text-white">Web Home</h1>
-        <p className="text-lg text-gray-300 sm:max-w-80">
+        <p className="text-lg text-gray-300 max-w-80 md:max-w-none">
           Teleport back to your minecraft home over this website
         </p>
         <div className="flex flex-row gap-4 mt-6">
@@ -42,9 +43,10 @@ export default async function Home() {
                 Home Info
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem>Dimension: {dimesnsion}</DropdownMenuItem>
               <DropdownMenuItem>Length (x): {x}</DropdownMenuItem>
-              <DropdownMenuItem>Hight (y): {y}</DropdownMenuItem>
-              <DropdownMenuItem>Width (z): {z}</DropdownMenuItem>
+              <DropdownMenuItem>Hight  (y): {y}</DropdownMenuItem>
+              <DropdownMenuItem>Width  (z): {z}</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuLabel>Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
