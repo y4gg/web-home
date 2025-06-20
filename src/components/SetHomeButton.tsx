@@ -26,7 +26,7 @@ export function SetHomeButton({ userEmail }: SetHomeButtonProps) {
       const data = await response.json();
       if (data.success) {
         toast.success('Home location set', {
-          description: data.server_response,
+          description: "Cordiantes: " + data.home.location,
         });
       } else {
         toast.error('Failed to set home location', {
@@ -46,7 +46,7 @@ export function SetHomeButton({ userEmail }: SetHomeButtonProps) {
   return (
     <Button variant={"secondary"} onClick={handleSetHome} disabled={loading}>
       {loading ? (
-        <Loader className="animate-spin w-4 h-4 mr-2" />
+        <Loader className="animate-spin w-4 h-4 mr-1" />
       ) : null}
       Set Home at current location
     </Button>
