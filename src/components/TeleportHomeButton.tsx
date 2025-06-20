@@ -67,7 +67,7 @@ export function TeleportHomeButton({
           }
         >
           {loading ? (
-            <Loader className="animate-spin w-4 h-4 mr-2" />
+            <Loader className="animate-spin w-4 h-4" />
           ) : null}
           Teleport to home
         </Button>

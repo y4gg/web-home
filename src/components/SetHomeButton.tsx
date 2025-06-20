@@ -46,7 +46,7 @@ export function SetHomeButton({ userEmail }: SetHomeButtonProps) {
   return (
     <Button variant={"secondary"} onClick={handleSetHome} disabled={loading}>
       {loading ? (
-        <Loader className="animate-spin w-4 h-4 mr-1" />
+        <Loader className="animate-spin w-4 h-4" />
       ) : null}
       Set Home at current location
     </Button>
