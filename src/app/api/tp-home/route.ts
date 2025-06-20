@@ -36,7 +36,8 @@ export async function POST(request: Request) {
     );
   } else {
     const cords = home.location;
-    await sendCommand(`tp ${username} ${cords}`);
+    const dimesnion = home.dimension;
+    await sendCommand(`execute as ${username} in ${dimesnion} run tp @s ${cords}`);
   }
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 }

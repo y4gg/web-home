@@ -5,16 +5,26 @@ import { auth } from "@/auth";
 export async function POST(request: Request) {
   const session = await auth();
   if (!session) {
-    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), { status: 401 });
+    return new Response(
+      JSON.stringify({ success: false, error: "Unauthorized" }),
+      { status: 401 }
+    );
   }
   const { identifier } = await request.json();
   const username = identifier.split("@")[0];
-  const response = await sendCommand(`/data get entity ${username} Pos`);
-  if (response === "No entity was found")
+  const dimensionResponse = await sendCommand(
+    `/data get entity ${username} Dimension`
+  );
+  if (dimensionResponse === "No entity was found")
     return new Response(
-      JSON.stringify({ success: false, server_response: response }),
+      JSON.stringify({ success: false, server_response: dimensionResponse }),
       { status: 404 }
     );
+  // Extract dimension value from response, e.g. "minecraft:the_nether"
+  const dimensionMatch = String(dimensionResponse).match(/: "([^"]+)"/);
+  const dimension = dimensionMatch ? dimensionMatch[1] : null;
+
+  const response = await sendCommand(`/data get entity ${username} Pos`);
 
   // Ensure response is a string
   const responseStr = String(response);
@@ -23,7 +33,11 @@ export async function POST(request: Request) {
   const match = responseStr.match(/\[([-\d.]+)d, ([-\d.]+)d, ([-\d.]+)d\]/);
   if (!match) {
     return new Response(
-      JSON.stringify({ success: false, error: "Could not parse coordinates", server_response: response }),
+      JSON.stringify({
+        success: false,
+        error: "Could not parse coordinates",
+        server_response: response,
+      }),
       { status: 400 }
     );
   }
@@ -32,7 +46,7 @@ export async function POST(request: Request) {
   const [x2, y2, z2] = [
     parseFloat(x).toFixed(2),
     parseFloat(y).toFixed(2),
-    parseFloat(z).toFixed(2)
+    parseFloat(z).toFixed(2),
   ];
 
   // Find user by email (identifier)
@@ -48,6 +62,7 @@ export async function POST(request: Request) {
   const home = await prisma.home.create({
     data: {
       location: `${x2} ${y2} ${z2}`,
+      dimension: dimension ?? "",
       userId: user.id,
     },
   });
