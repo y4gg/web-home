@@ -21,6 +21,7 @@ export async function sendCommand(command: string) {
       });
     });
     rcon.on("error", (err: string) => {
+      rcon.disconnect();
       console.error("Error:", err);
       reject(err);
     });
