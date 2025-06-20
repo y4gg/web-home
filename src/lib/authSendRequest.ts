@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const baseUrl = process.env.NEXTAUTH_URL || "https://wh.y4.gg";
 const secret = process.env.AUTH_SECRET;
 
 export async function sendVerificationRequest({
