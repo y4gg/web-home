@@ -14,12 +14,16 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export function Buttons() {
   const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const Action = (user: string) => {
-    signIn("http-email", { email: `${user}@y4.gg` });
+    signIn("http-email", { email: `${user}@y4.gg`, redirect: false });
+    toast.success("The link was sent into the in game chat", {
+      description: "You have to be online to receive the link",
+    });
   };
   if (!session) {
     return (
@@ -80,7 +84,8 @@ export function DashboardDialog() {
             <DialogHeader>
               <DialogTitle>Go to dashboard</DialogTitle>
               <DialogDescription>
-                It seems like you wanted to visit the dashboard page, which you can do by clicking the button below.
+                It seems like you wanted to visit the dashboard page, which you
+                can do by clicking the button below.
               </DialogDescription>
             </DialogHeader>
             <div className="flex flex-row gap-3">
