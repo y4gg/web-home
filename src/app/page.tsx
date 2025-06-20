@@ -5,14 +5,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Buttons } from "@/components/buttons";
-import { signIn, SessionProvider } from "next-auth/react";
+import { Buttons, Logout, DashboardDialog } from "@/components/buttons";
+import { SessionProvider } from "next-auth/react";
 
 export default function Home() {
-  const Action = (user: string) => {
-    signIn("http-email", { email: `${user}@y4.gg` });
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold text-white">Web Home</h1>
@@ -21,6 +17,7 @@ export default function Home() {
       </p>
       <div className="flex flex-row gap-4 mt-6">
         <SessionProvider>
+          <DashboardDialog />
           <Buttons />
         </SessionProvider>
       </div>
@@ -58,6 +55,9 @@ export default function Home() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+      <SessionProvider>
+        <Logout />
+      </SessionProvider>
     </div>
   );
 }

@@ -1,3 +1,6 @@
+const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const secret = process.env.AUTH_SECRET;
+
 export async function sendVerificationRequest({
   identifier: email,
   url,
@@ -5,7 +8,7 @@ export async function sendVerificationRequest({
   identifier: string;
   url: string;
 }) {
-  await fetch("http://localhost:3000/api/send-verification", {
+  await fetch(`${baseUrl}/api/send-verification`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -13,6 +16,7 @@ export async function sendVerificationRequest({
     body: JSON.stringify({
       identifier: email,
       url,
+      secret,
     }),
   });
 }

@@ -12,7 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export function Buttons() {
   const { data: session } = useSession();
@@ -58,9 +59,55 @@ export function Buttons() {
   } else {
     return (
       <>
-        <Button>Teleport to home</Button>
-        <Button variant={"outline"}>Set Home at current location</Button>
+        <Button asChild>
+          <Link href="/dashboard">Go to dashboard</Link>
+        </Button>
       </>
+    );
+  }
+}
+
+export function DashboardDialog() {
+  const { data: session } = useSession();
+  const [open, setOpen] = useState(true);
+  if (!session) {
+    return null;
+  } else {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <form>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Go to dashboard</DialogTitle>
+              <DialogDescription>
+                It seems like you wanted to visit the dashboard page, which you can do by clicking the button below.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-row gap-3">
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button asChild>
+                <Link href={"/dashboard"}>Go to dashboard</Link>
+              </Button>
+              <Logout />
+            </div>
+          </DialogContent>
+        </form>
+      </Dialog>
+    );
+  }
+}
+
+export function Logout() {
+  const { data: session } = useSession();
+  if (!session) {
+    return null;
+  } else {
+    return (
+      <Button variant={"link"} onClick={() => signOut()}>
+        Logout
+      </Button>
     );
   }
 }
