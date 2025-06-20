@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     orderBy: { createdAt: "desc" },
   });
 
+  console.log(home);
   if (!home) {
     return new Response(
       JSON.stringify({ success: false, error: "No home location found" }),

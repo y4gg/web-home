@@ -10,7 +10,6 @@ const rcon = new Rcon(host, port, psw);
 
 export async function sendCommand(command: string) {
   const response = new Promise((resolve, reject) => {
-
     rcon.connect();
     rcon.on("auth", () => {
       console.log("Authenticated.");

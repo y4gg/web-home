@@ -18,6 +18,7 @@ export async function POST(request: Request) {
 
   // Ensure response is a string
   const responseStr = String(response);
+  console.log("RCON response:", responseStr); // Debug log
   // Parse coordinates from response string
   // Example: '[Steve] has the following entity data: [123.45d, 64.00d, -321.67d]'
   const match = responseStr.match(/\[([-\d.]+)d, ([-\d.]+)d, ([-\d.]+)d\]/);
