@@ -7,6 +7,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Loader } from "lucide-react";
+import React from "react";
 
 interface TeleportHomeButtonProps {
   userEmail: string;
@@ -17,7 +19,9 @@ export function TeleportHomeButton({
   userEmail,
   home,
 }: TeleportHomeButtonProps) {
+  const [loading, setLoading] = React.useState(false);
   const handleTeleportHome = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/tp-home", {
         method: "POST",
@@ -43,6 +47,8 @@ export function TeleportHomeButton({
       toast.error("Failed to teleport to home", {
         description: "An unexpected error occurred",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,13 +59,16 @@ export function TeleportHomeButton({
       <HoverCardTrigger>
         <Button
           onClick={handleTeleportHome}
-          disabled={!hasHome}
+          disabled={!hasHome || loading}
           title={
             !hasHome
               ? "No home location set. Use 'Set Home' first."
               : "Teleport to your home location"
           }
         >
+          {loading ? (
+            <Loader className="animate-spin w-4 h-4 mr-2" />
+          ) : null}
           Teleport to home
         </Button>
       </HoverCardTrigger>
