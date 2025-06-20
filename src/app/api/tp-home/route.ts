@@ -4,7 +4,10 @@ import { auth } from "@/auth";
 export async function POST(request: Request) {
   const session = await auth();
   if (!session) {
-    return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), { status: 401 });
+    return new Response(
+      JSON.stringify({ success: false, error: "Unauthorized" }),
+      { status: 401 }
+    );
   }
   const { identifier } = await request.json();
   const username = identifier.split("@")[0];
@@ -22,7 +25,7 @@ export async function POST(request: Request) {
   // Get the latest home coordinates
   const home = await prisma.home.findFirst({
     where: { userId: user.id },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" },
   });
 
   if (!home) {
@@ -30,10 +33,10 @@ export async function POST(request: Request) {
       JSON.stringify({ success: false, error: "No home location found" }),
       { status: 404 }
     );
+  } else {
+    const cords = home.location;
+    await sendCommand(`tp ${username} ${cords}`);
   }
-  await sendCommand(
-    `tp ${username} `
-  );
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 }
 

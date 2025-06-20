@@ -28,6 +28,12 @@ export async function POST(request: Request) {
     );
   }
   const [x, y, z] = [match[1], match[2], match[3]];
+  // Limit to two decimal places
+  const [x2, y2, z2] = [
+    parseFloat(x).toFixed(2),
+    parseFloat(y).toFixed(2),
+    parseFloat(z).toFixed(2)
+  ];
 
   // Find user by email (identifier)
   const user = await prisma.user.findUnique({ where: { email: identifier } });
@@ -41,7 +47,7 @@ export async function POST(request: Request) {
   // Save coordinates as a new Home
   const home = await prisma.home.create({
     data: {
-      location: `${x} ${y} ${z}`,
+      location: `${x2} ${y2} ${z2}`,
       userId: user.id,
     },
   });
