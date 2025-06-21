@@ -20,6 +20,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   home     Home[]
+  maxHomes Int    @default(3)
 }
 
 model Home {

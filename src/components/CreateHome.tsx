@@ -14,9 +14,23 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function CreateHome({ userEmail }: { userEmail: string }) {
+interface Home {
+  id: string;
+  name: string;
+  location: string;
+  dimension: string;
+}
+
+export function CreateHome({
+  userEmail,
+  onHomeCreated,
+}: {
+  userEmail: string;
+  onHomeCreated: (home: Home) => void;
+}) {
   const [homeName, setHomeName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const handleSetHome = async () => {
     setLoading(true);
     try {
@@ -32,25 +46,27 @@ export function CreateHome({ userEmail }: { userEmail: string }) {
       });
       const data = await response.json();
       if (data.success) {
-        toast.success('Home location set', {
+        toast.success("Home location set", {
           description: "Cordiantes: " + data.home.location,
         });
+        onHomeCreated(data.home);
+        setOpen(false);
       } else {
-        toast.error('Failed to set home location', {
+        toast.error("Failed to set home location", {
           description: data.error || data.server_response,
         });
       }
     } catch (error) {
       console.log(error);
-      toast.error('Failed to set home location', {
-        description: 'An unexpected error occurred',
+      toast.error("Failed to set home location", {
+        description: "An unexpected error occurred",
       });
     } finally {
       setLoading(false);
     }
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Create Home</Button>
       </DialogTrigger>

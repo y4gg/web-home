@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOutAction } from "@/app/actions";
 
 export function More({ user }: { user: string }) {
   return (
@@ -20,13 +20,7 @@ export function More({ user }: { user: string }) {
         <DropdownMenuSeparator />
         <DropdownMenuItem>Name: {user}</DropdownMenuItem>
         <DropdownMenuItem>
-          <form
-            className="p-0"
-            action={async () => {
-              "use server";
-              await signOut();
-            }}
-          >
+          <form className="p-0" action={signOutAction}>
             <Button variant={"link"} className="text-red-500 p-0 m-0 h-0">
               Sign out
             </Button>

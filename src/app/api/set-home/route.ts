@@ -62,11 +62,20 @@ export async function POST(request: Request) {
   ];
 
   // Find user by email (identifier)
-  const user = await prisma.user.findUnique({ where: { email: identifier } });
+  const user = await prisma.user.findUnique({
+    where: { email: identifier },
+    include: { home: true },
+  });
   if (!user) {
     return new Response(
       JSON.stringify({ success: false, error: "User not found" }),
       { status: 404 }
+    );
+  }
+  if (user.maxHomes <= user.home.length) {
+    return new Response(
+      JSON.stringify({ success: false, error: "You have reached the maximum number of homes" }),
+      { status: 400 }
     );
   }
 

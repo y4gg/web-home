@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { MapPinHouse, Trash2 } from "lucide-react";
+import { MapPinHouse, Trash2, Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -23,9 +23,11 @@ interface Home {
 export function HomeTable({
   homes,
   userEmail,
+  onHomeDeleted,
 }: {
   homes: Home[];
   userEmail: string;
+  onHomeDeleted: (homeId: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
   const handleTeleportHome = async (homeId: string) => {
@@ -60,6 +62,38 @@ export function HomeTable({
       setLoading(false);
     }
   };
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const handleDeleteHome = async (homeId: string) => {
+    setLoadingDelete(true);
+    try {
+      const response = await fetch("/api/del-home", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identifier: userEmail,
+          homeId: homeId,
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        toast("Deleted Home sucessfuly");
+        onHomeDeleted(homeId);
+      } else {
+        toast.error("Failded to delete home", {
+          description: data.error || data.server_response,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to teleport to home", {
+        description: "An unexpected error occurred",
+      });
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
   return (
     <Table className="mt-4">
       <TableCaption>Your home list.</TableCaption>
@@ -78,15 +112,17 @@ export function HomeTable({
             <TableCell>{home.dimension}</TableCell>
             <TableCell>{home.location}</TableCell>
             <TableCell className="text-right">
-              <Button variant={"default"} size={"icon"} className="size-8" onClick={() => handleTeleportHome(home.id)}>
-                <MapPinHouse />
+              <Button variant={"default"} size={"icon"} className="size-8" onClick={() => handleTeleportHome(home.id)} disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPinHouse />}
               </Button>
               <Button
                 variant={"destructive"}
                 size={"icon"}
                 className="size-8 ml-2"
+                disabled={loadingDelete}
+                onClick={() => handleDeleteHome(home.id)}
               >
-                <Trash2 />
+                {loadingDelete ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 />}
               </Button>
             </TableCell>
           </TableRow>

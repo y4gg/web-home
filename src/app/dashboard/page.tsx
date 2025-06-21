@@ -1,9 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/prisma";
-import { HomeTable } from "@/components/HomeTable";
-import { More } from "@/components/More";
-import { CreateHome } from "@/components/CreateHome";
+import { DashboardClient } from "./DashboardClient";
 
 export default async function Home() {
   const session = await auth();
@@ -15,7 +13,6 @@ export default async function Home() {
     const homes = await prisma.home.findMany({
       where: { userId: session.user!.id },
       orderBy: { createdAt: "desc" },
-      take: 3,
     });
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -23,11 +20,11 @@ export default async function Home() {
         <p className="text-lg text-gray-300 max-w-80 md:max-w-none">
           Teleport back to your minecraft home over this website
         </p>
-        <div className="flex flex-row gap-4 mt-6">
-          <CreateHome userEmail={email ?? ""} />
-          <More user={user ?? ""} />
-        </div>
-        <HomeTable homes={homes} userEmail={email ?? ""} />
+        <DashboardClient
+          initialHomes={homes}
+          userEmail={email ?? ""}
+          user={user ?? ""}
+        />
       </div>
     );
   }

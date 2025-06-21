@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "maxHomes" INTEGER NOT NULL DEFAULT 3;
