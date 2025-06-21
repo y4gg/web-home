@@ -15,7 +15,6 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const username = identifier.split("@")[0];
   const { prisma } = await import("@/prisma");
 
   // Find user by email (identifier)
