@@ -8,44 +8,30 @@ const psw = process.env.RCON_PASSWORD;
 
 const rcon = new Rcon(host, port, psw);
 
-let isConnected = false;
-
 rcon.on("auth", () => {
-  isConnected = true;
   console.log("Authenticated.");
 });
 
 rcon.on("end", () => {
-  isConnected = false;
   console.log("Connection closed.");
 });
 
-rcon.on("error", (err: string) => {
-  isConnected = false;
-  console.error("RCON error:", err);
-});
-
-// Connect once at startup
-rcon.connect();
-
 export async function sendCommand(command: string) {
-  if (!isConnected) {
-    console.error("Not connected to RCON");
-    console.log("Attempting to connect...");
-    await rcon.connect();
-    if (!isConnected) {
-      throw new Error("RCON not connected");
-    }
-  }
-  return new Promise((resolve, reject) => {
-    rcon.once("response", (str: string) => {
-      console.log("Server response:", str);
-      resolve(str);
+  const response = new Promise((resolve, reject) => {
+    rcon.connect();
+    rcon.once("auth", () => {
+      rcon.send(command);
+      rcon.once("response", (data: string) => {
+        console.log(data);
+        rcon.disconnect();
+        resolve(data);
+      });
+      rcon.once("error", (err: string) => {
+        console.error(err);
+        rcon.disconnect();
+        reject(err);
+      });
     });
-    rcon.once("error", (err: string) => {
-      console.error("Error:", err);
-      reject(err);
-    });
-    rcon.send(command);
   });
+  return response;
 }
