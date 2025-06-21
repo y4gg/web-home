@@ -30,9 +30,12 @@ rcon.connect();
 
 export async function sendCommand(command: string) {
   if (!isConnected) {
-    throw new Error("RCON not connected");
+    console.error("Not connected to RCON");
     console.log("Attempting to connect...");
     await rcon.connect();
+    if (!isConnected) {
+      throw new Error("RCON not connected");
+    }
   }
   return new Promise((resolve, reject) => {
     rcon.once("response", (str: string) => {
