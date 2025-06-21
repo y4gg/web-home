@@ -10,7 +10,8 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  const { identifier, homeName } = await request.json();
+  const identifier = session.user?.email;
+  const { homeName } = await request.json();
   if (homeName === "") {
     return new Response(
       JSON.stringify({ success: false, error: "Home name is required" }),
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const username = identifier.split("@")[0];
+  const username = identifier?.split("@")[0];
   const dimensionResponse = await sendCommand(
     `/data get entity ${username} Dimension`
   );
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
 
   // Find user by email (identifier)
   const user = await prisma.user.findUnique({
-    where: { email: identifier },
+    where: { email: identifier! },
     include: { home: true },
   });
   if (!user) {
