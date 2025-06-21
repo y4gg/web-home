@@ -9,7 +9,13 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  const { identifier } = await request.json();
+  const { identifier, homeId } = await request.json();
+  if (homeId === "") {
+    return new Response(
+      JSON.stringify({ success: false, error: "Home id is required" }),
+      { status: 400 }
+    );
+  }
   const username = identifier.split("@")[0];
   const { prisma } = await import("@/prisma");
 
@@ -22,10 +28,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Get the latest home coordinates
   const home = await prisma.home.findFirst({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
+    where: { id: homeId },
   });
 
   console.log(home);

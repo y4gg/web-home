@@ -8,6 +8,7 @@ export async function sendVerificationRequest({
   identifier: string;
   url: string;
 }) {
+  console.debug("[DEBUG] Verify: ", email, url);
   await fetch(`${baseUrl}/api/send-verification`, {
     method: "POST",
     headers: {

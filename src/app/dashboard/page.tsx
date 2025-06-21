@@ -1,30 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { prisma } from "@/prisma";
-import { SetHomeButton } from "@/components/SetHomeButton";
-import { TeleportHomeButton } from "@/components/TeleportHomeButton";
+import { HomeTable } from "@/components/HomeTable";
+import { More } from "@/components/More";
+import { CreateHome } from "@/components/CreateHome";
 
 export default async function Home() {
   const session = await auth();
   if (!session) {
     redirect("/");
   } else {
+    const email = session?.user!.email;
     const user = session?.user!.email?.split("@")[0];
-    const home = await prisma.home.findFirst({
+    const homes = await prisma.home.findMany({
       where: { userId: session.user!.id },
       orderBy: { createdAt: "desc" },
+      take: 3,
     });
-    const [x, y, z] = [home?.location?.split(" ")[0], home?.location?.split(" ")[1], home?.location?.split(" ")[2]];
-    const dimesnsion = home?.dimension;
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-4xl font-bold text-white">Web Home</h1>
@@ -32,41 +24,10 @@ export default async function Home() {
           Teleport back to your minecraft home over this website
         </p>
         <div className="flex flex-row gap-4 mt-6">
-          <TeleportHomeButton userEmail={session.user!.email!} home={home} />
-          <SetHomeButton userEmail={session.user!.email!} />
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant={"outline"}>More</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel className="text-bold">
-                Home Info
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Dimension: {dimesnsion}</DropdownMenuItem>
-              <DropdownMenuItem>Length (x): {x}</DropdownMenuItem>
-              <DropdownMenuItem>Hight  (y): {y}</DropdownMenuItem>
-              <DropdownMenuItem>Width  (z): {z}</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Name: {user}</DropdownMenuItem>
-              <DropdownMenuItem>
-                <form
-                  className="p-0"
-                  action={async () => {
-                    "use server";
-                    await signOut();
-                  }}
-                >
-                  <Button variant={"link"} className="text-red-500 p-0 m-0 h-0">
-                    Sign out
-                  </Button>
-                </form>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <CreateHome userEmail={email ?? ""} />
+          <More user={user ?? ""} />
         </div>
+        <HomeTable homes={homes} userEmail={email ?? ""} />
       </div>
     );
   }

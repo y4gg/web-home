@@ -10,7 +10,19 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  const { identifier } = await request.json();
+  const { identifier, homeName } = await request.json();
+  if (homeName === "") {
+    return new Response(
+      JSON.stringify({ success: false, error: "Home name is required" }),
+      { status: 400 }
+    );
+  }
+  if (homeName.length > 12) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Home name is too long" }),
+      { status: 400 }
+    );
+  }
   const username = identifier.split("@")[0];
   const dimensionResponse = await sendCommand(
     `/data get entity ${username} Dimension`
@@ -64,6 +76,7 @@ export async function POST(request: Request) {
       location: `${x2} ${y2} ${z2}`,
       dimension: dimension ?? "",
       userId: user.id,
+      name: homeName,
     },
   });
 
