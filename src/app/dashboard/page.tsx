@@ -14,6 +14,10 @@ export default async function Home() {
       where: { userId: session.user!.id },
       orderBy: { createdAt: "desc" },
     });
+    const maxHomes = await prisma.user.findUnique({
+      where: { id: session.user!.id },
+      select: { maxHomes: true },
+    });
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-4xl font-bold text-white">Web Home</h1>
@@ -24,6 +28,7 @@ export default async function Home() {
           initialHomes={homes}
           userEmail={email ?? ""}
           user={user ?? ""}
+          maxHomes={maxHomes?.maxHomes ?? 3}
         />
       </div>
     );

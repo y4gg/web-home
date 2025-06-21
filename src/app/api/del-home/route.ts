@@ -8,7 +8,8 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  const { identifier, homeId } = await request.json();
+  const identifier = session.user?.email;
+  const { homeId } = await request.json();
   if (homeId === "") {
     return new Response(
       JSON.stringify({ success: false, error: "Home id is required" }),
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
   const { prisma } = await import("@/prisma");
 
   // Find user by email (identifier)
-  const user = await prisma.user.findUnique({ where: { email: identifier } });
+  const user = await prisma.user.findUnique({ where: { email: identifier! } });
   if (!user) {
     return new Response(
       JSON.stringify({ success: false, error: "User not found" }),

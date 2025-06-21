@@ -39,7 +39,6 @@ export function HomeTable({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          identifier: userEmail,
           homeId: homeId,
         }),
       });
@@ -72,7 +71,6 @@ export function HomeTable({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          identifier: userEmail,
           homeId: homeId,
         }),
       });

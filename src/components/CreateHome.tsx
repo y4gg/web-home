@@ -13,6 +13,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 interface Home {
   id: string;
@@ -24,9 +29,11 @@ interface Home {
 export function CreateHome({
   userEmail,
   onHomeCreated,
+  disabled,
 }: {
   userEmail: string;
   onHomeCreated: (home: Home) => void;
+  disabled: boolean;
 }) {
   const [homeName, setHomeName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +47,6 @@ export function CreateHome({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          identifier: userEmail,
           homeName,
         }),
       });
@@ -67,9 +73,20 @@ export function CreateHome({
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Create Home</Button>
-      </DialogTrigger>
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <DialogTrigger asChild>
+            <Button disabled={disabled}>Create Home</Button>
+          </DialogTrigger>
+        </HoverCardTrigger>
+        <HoverCardContent>
+          {disabled ? (
+            <p>You have reached the maximum number of homes.</p>
+          ) : (
+            <p>Creates a home at your player&apos;s current location.</p>
+          )}
+        </HoverCardContent>
+      </HoverCard>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Home</DialogTitle>
@@ -80,7 +97,11 @@ export function CreateHome({
         <div className="grid gap-4">
           <div className="grid gap-3">
             <Label htmlFor="homeName">Home Name</Label>
-            <Input type="text" placeholder="OP Base" onChange={(e) => setHomeName(e.target.value)} />
+            <Input
+              type="text"
+              placeholder="OP Base"
+              onChange={(e) => setHomeName(e.target.value)}
+            />
           </div>
         </div>
         <div className="flex flex-row gap-3">

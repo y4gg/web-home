@@ -15,10 +15,12 @@ export function DashboardClient({
   initialHomes,
   userEmail,
   user,
+  maxHomes,
 }: {
   initialHomes: Home[];
   userEmail: string;
   user: string;
+  maxHomes: number;
 }) {
   const [homes, setHomes] = useState<Home[]>(initialHomes);
 
@@ -30,10 +32,12 @@ export function DashboardClient({
     setHomes(homes.filter((home) => home.id !== homeId));
   };
 
+  const disabled = homes.length >= maxHomes;
+
   return (
     <>
       <div className="flex flex-row gap-4 mt-6">
-        <CreateHome userEmail={userEmail} onHomeCreated={handleHomeCreated} />
+        <CreateHome userEmail={userEmail} onHomeCreated={handleHomeCreated} disabled={disabled} />
         <More user={user} />
       </div>
       <HomeTable
