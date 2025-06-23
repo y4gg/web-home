@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { MapPinHouse, Trash2, Loader2, MoreVertical } from "lucide-react";
+import { MapPinHouse, Loader2, MoreVertical, Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -17,6 +17,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -157,7 +158,7 @@ export function HomeTable({
                   </p>
                   <div className="flex flex-row gap-3 mt-2">
                     <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
+                      <Button variant="outline">Close</Button>
                     </DialogClose>
                     <Dialog>
                       <DialogTrigger>
@@ -172,6 +173,23 @@ export function HomeTable({
                             servers.
                           </DialogDescription>
                         </DialogHeader>
+                        <div className="flex flex-row gap-3 mt-2">
+                          <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                          </DialogClose>
+                          <Button 
+                            variant="destructive"
+                            onClick={() => handleDeleteHome(home.id)}
+                            disabled={loadingDelete}
+                          >
+                            {loadingDelete ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash2 />
+                            )}
+                            Delete
+                          </Button>
+                        </div>
                       </DialogContent>
                     </Dialog>
                   </div>
