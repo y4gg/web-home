@@ -13,11 +13,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 
 interface Home {
   id: string;
@@ -27,7 +22,6 @@ interface Home {
 }
 
 export function CreateHome({
-  userEmail,
   onHomeCreated,
   disabled,
 }: {
@@ -73,25 +67,14 @@ export function CreateHome({
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <HoverCard>
-        <HoverCardTrigger asChild>
-          <DialogTrigger asChild>
-            <Button disabled={disabled}>Create Home</Button>
-          </DialogTrigger>
-        </HoverCardTrigger>
-        <HoverCardContent>
-          {disabled ? (
-            <p>You have reached the maximum number of homes.</p>
-          ) : (
-            <p>Creates a home at your player&apos;s current location.</p>
-          )}
-        </HoverCardContent>
-      </HoverCard>
+      <DialogTrigger asChild>
+        <Button disabled={disabled}>Create Home</Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Home</DialogTitle>
           <DialogDescription>
-            Create a new home for your minecraft account.
+            Create a new home where you are at.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">

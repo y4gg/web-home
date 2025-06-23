@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { MapPinHouse, Trash2, Loader2 } from "lucide-react";
+import { MapPinHouse, Trash2, Loader2, MoreVertical } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -12,6 +12,16 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 interface Home {
   id: string;
@@ -98,8 +108,6 @@ export function HomeTable({
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Home Name</TableHead>
-          <TableHead>Dimension</TableHead>
-          <TableHead>Cordinates</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -107,21 +115,68 @@ export function HomeTable({
         {homes.map((home) => (
           <TableRow key={home.id}>
             <TableCell className="font-medium">{home.name}</TableCell>
-            <TableCell>{home.dimension}</TableCell>
-            <TableCell>{home.location}</TableCell>
             <TableCell className="text-right">
-              <Button variant={"default"} size={"icon"} className="size-8" onClick={() => handleTeleportHome(home.id)} disabled={loading}>
-                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPinHouse />}
-              </Button>
               <Button
-                variant={"destructive"}
+                variant={"default"}
                 size={"icon"}
-                className="size-8 ml-2"
-                disabled={loadingDelete}
-                onClick={() => handleDeleteHome(home.id)}
+                className="size-8"
+                onClick={() => handleTeleportHome(home.id)}
+                disabled={loading}
               >
-                {loadingDelete ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 />}
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <MapPinHouse />
+                )}
               </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    size={"icon"}
+                    className="size-8 ml-2"
+                  >
+                    <MoreVertical />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Info & More Options</DialogTitle>
+                    <DialogDescription>
+                      This is the dialog that shows your home information, so be
+                      carefull when streaming!
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Label>Home Location</Label>
+                  <p className="pl-2 blur-sm hover:blur-none transition">
+                    {home.location}
+                  </p>
+                  <Label>Home Dimension</Label>
+                  <p className="pl-2 blur-sm hover:blur-none transition">
+                    {home.dimension}
+                  </p>
+                  <div className="flex flex-row gap-3 mt-2">
+                    <DialogClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogClose>
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button variant={"destructive"}>Delete</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Are you absolutely sure?</DialogTitle>
+                          <DialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete your account and remove your data from our
+                            servers.
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </TableCell>
           </TableRow>
         ))}
