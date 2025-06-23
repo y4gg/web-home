@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { MapPinHouse, Loader2, MoreVertical, Trash2 } from "lucide-react";
+import { MapPinHouse, Loader2, MoreVertical, Trash2, Eye, EyeOff } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -71,6 +71,9 @@ export function HomeTable({
     }
   };
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [showLocation, setShowLocation] = useState(false);
+  const [showDimension, setShowDimension] = useState(false);
+  
   const handleDeleteHome = async (homeId: string) => {
     setLoadingDelete(true);
     try {
@@ -147,13 +150,33 @@ export function HomeTable({
                     </DialogDescription>
                   </DialogHeader>
                   <Label>Home Location</Label>
-                  <p className="pl-2 blur-sm hover:blur-none transition">
-                    {home.location}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className={`pl-2 transition ${showLocation ? '' : 'blur-sm'}`}>
+                      {home.location}
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-8"
+                      onClick={() => setShowLocation(!showLocation)}
+                    >
+                      {showLocation ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
                   <Label>Home Dimension</Label>
-                  <p className="pl-2 blur-sm hover:blur-none transition">
-                    {home.dimension}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className={`pl-2 transition ${showDimension ? '' : 'blur-sm'}`}>
+                      {home.dimension}
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-8"
+                      onClick={() => setShowDimension(!showDimension)}
+                    >
+                      {showDimension ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
                   <div className="flex flex-row gap-3 mt-2">
                     <DialogClose asChild>
                       <Button variant="outline">Close</Button>
