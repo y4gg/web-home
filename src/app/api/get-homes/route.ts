@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = await auth();
   if (!session) {
     return new Response(

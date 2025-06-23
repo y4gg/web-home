@@ -17,7 +17,6 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -33,7 +32,6 @@ interface Home {
 
 export function HomeTable({
   homes,
-  userEmail,
   onHomeDeleted,
 }: {
   homes: Home[];
