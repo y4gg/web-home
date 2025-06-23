@@ -22,7 +22,6 @@ interface Home {
 
 export function HomeTable({
   homes,
-  userEmail,
   onHomeDeleted,
 }: {
   homes: Home[];

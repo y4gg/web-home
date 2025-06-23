@@ -27,7 +27,6 @@ interface Home {
 }
 
 export function CreateHome({
-  userEmail,
   onHomeCreated,
   disabled,
 }: {
