@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Buttons, Logout, DashboardDialog } from "@/components/buttons";
+import { Buttons, DashboardDialog } from "@/components/buttons";
 import { SessionProvider } from "next-auth/react";
 
 export default function Home() {
