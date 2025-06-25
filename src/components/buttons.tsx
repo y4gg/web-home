@@ -15,6 +15,8 @@ import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { More } from "./More";
+import { ChevronRight, LogIn } from "lucide-react";
 
 export function Buttons() {
   const { data: session } = useSession();
@@ -30,7 +32,8 @@ export function Buttons() {
       <Dialog>
         <form>
           <DialogTrigger asChild>
-            <Button>Sign In</Button>
+            <Button>
+            <LogIn />Sign In</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -54,7 +57,7 @@ export function Buttons() {
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button onClick={() => Action(username)}>Sign In</Button>
+              <Button onClick={() => Action(username)}><LogIn />Sign In</Button>
             </div>
           </DialogContent>
         </form>
@@ -64,8 +67,12 @@ export function Buttons() {
     return (
       <>
         <Button asChild>
-          <Link href="/dashboard">Go to dashboard</Link>
+          <Link href="/dashboard">
+            Go to dashboard
+            <ChevronRight />
+          </Link>
         </Button>
+        <More user={session.user?.email?.split("@")[0] ?? ""} />
       </>
     );
   }
@@ -93,7 +100,10 @@ export function DashboardDialog() {
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button asChild>
-                <Link href={"/dashboard"}>Go to dashboard</Link>
+                <Link href={"/dashboard"}>
+                Go to dashboard
+                <ChevronRight />
+                </Link>
               </Button>
               <Logout />
             </div>

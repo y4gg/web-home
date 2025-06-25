@@ -52,9 +52,6 @@ export default function Home() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <SessionProvider>
-        <Logout />
-      </SessionProvider>
     </div>
   );
 }

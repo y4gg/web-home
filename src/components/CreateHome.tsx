@@ -13,6 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
+import { MapPinPlus } from "lucide-react";
 
 interface Home {
   id: string;
@@ -68,7 +69,9 @@ export function CreateHome({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button disabled={disabled}>Create Home</Button>
+        <Button disabled={disabled}>
+        <MapPinPlus />
+          Create Home</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -84,6 +87,7 @@ export function CreateHome({
               type="text"
               placeholder="OP Base"
               onChange={(e) => setHomeName(e.target.value)}
+              maxLength={24}
             />
           </div>
         </div>
@@ -92,6 +96,7 @@ export function CreateHome({
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button onClick={handleSetHome} disabled={loading}>
+          <MapPinPlus />
             Create
           </Button>
         </div>

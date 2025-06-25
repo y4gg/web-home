@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  if (homeName.length > 12) {
+  if (homeName.length > 24) {
     return new Response(
       JSON.stringify({ success: false, error: "Home name is too long" }),
       { status: 400 }
